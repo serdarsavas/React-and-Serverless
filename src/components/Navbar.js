@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Accent } from '../styled/Misc';
 import {
   StyledLink,
@@ -21,7 +20,7 @@ export default function Navbar() {
           <StyledLink to='/'>Home</StyledLink>
         </li>
         <li>
-          <StyledLink to='/'>High Scores</StyledLink>
+          <StyledLink to='/high-scores'>High Scores</StyledLink>
         </li>
       </StyledNavItems>
     </StyledNavbar>

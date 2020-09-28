@@ -18,8 +18,8 @@ function App() {
           <Navbar />
           <Switch>
             <Route path='/game' component={Game} />
-            <Route path='/highScores' component={HighScores} />
-            <Route path='/gameOver' component={GameOver} />
+            <Route path='/high-scores' component={HighScores} />
+            <Route path='/game-over' component={GameOver} />
             <Route path='/' component={Home} />
           </Switch>
         </Container>
