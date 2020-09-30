@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useScore } from '../contexts/ScoreContext';
 import {
   StyledCharacter,
   StyledGame,
@@ -8,17 +9,17 @@ import {
 import { Strong } from '../styled/Misc';
 
 export default function Game({ history }) {
-  const MAX_SECONDS = 90;
+  const MAX_SECONDS = 10;
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
-  const [input, setInput] = useState('');
   const [currentCharacter, setCurrentCharacter] = useState('');
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useScore(0);
   const [ms, setMs] = useState(0);
   const [seconds, setSeconds] = useState(MAX_SECONDS);
 
   useEffect(() => {
     setRandomCharacter();
+    setScore(0);
     const currentTime = new Date();
     const interval = setInterval(() => updateTime(currentTime), 1);
     return () => clearInterval(interval);
@@ -30,16 +31,24 @@ export default function Game({ history }) {
     }
   }, [seconds, ms, history]);
 
+  const keyupHandler = useCallback(
+    e => {
+      if (e.key === currentCharacter) {
+        setScore(prevScore => prevScore + 1);
+      } else if (score > 0) {
+        setScore(prevScore => prevScore - 1);
+      }
+      setRandomCharacter();
+    },
+    [currentCharacter]
+  );
+
   useEffect(() => {
     document.addEventListener('keyup', keyupHandler);
     return () => {
       document.removeEventListener('keyup', keyupHandler);
     };
-  }, [input]);
-
-  const keyupHandler = e => {
-    setInput(e.key);
-  };
+  }, [keyupHandler]);
 
   const updateTime = startTime => {
     const endTime = new Date();
