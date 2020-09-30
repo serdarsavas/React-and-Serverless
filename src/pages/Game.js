@@ -8,12 +8,17 @@ import {
 import { Strong } from '../styled/Misc';
 
 export default function Game({ history }) {
+  const MAX_SECONDS = 90;
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+  const [input, setInput] = useState('');
+  const [currentCharacter, setCurrentCharacter] = useState('');
   const [score, setScore] = useState(0);
-  const MAX_SECONDS = 5;
   const [ms, setMs] = useState(0);
   const [seconds, setSeconds] = useState(MAX_SECONDS);
 
   useEffect(() => {
+    setRandomCharacter();
     const currentTime = new Date();
     const interval = setInterval(() => updateTime(currentTime), 1);
     return () => clearInterval(interval);
@@ -23,7 +28,18 @@ export default function Game({ history }) {
     if (seconds <= -1) {
       history.push('/game-over');
     }
-  }, [seconds, ms]);
+  }, [seconds, ms, history]);
+
+  useEffect(() => {
+    document.addEventListener('keyup', keyupHandler);
+    return () => {
+      document.removeEventListener('keyup', keyupHandler);
+    };
+  }, [input]);
+
+  const keyupHandler = e => {
+    setInput(e.key);
+  };
 
   const updateTime = startTime => {
     const endTime = new Date();
@@ -49,12 +65,17 @@ export default function Game({ history }) {
     return (zeros + num).slice(-length);
   };
 
+  const setRandomCharacter = () => {
+    const randomInt = Math.floor(Math.random() * 36);
+    setCurrentCharacter(characters[randomInt]);
+  };
+
   return (
     <StyledGame>
       <StyledScore>
         Score:<Strong>{score}</Strong>
       </StyledScore>
-      <StyledCharacter>A</StyledCharacter>
+      <StyledCharacter>{currentCharacter}</StyledCharacter>
       <StyledTimer>
         Time:{' '}
         <Strong>
