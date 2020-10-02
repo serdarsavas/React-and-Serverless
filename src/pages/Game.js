@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { useScore } from '../contexts/ScoreContext';
 import {
@@ -23,6 +25,7 @@ export default function Game({ history }) {
     const currentTime = new Date();
     const interval = setInterval(() => updateTime(currentTime), 1);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export default function Game({ history }) {
       }
       setRandomCharacter();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentCharacter]
   );
 
