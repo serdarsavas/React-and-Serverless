@@ -15,6 +15,7 @@ export default function HighScores() {
       }
     };
     loadHighScores();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
