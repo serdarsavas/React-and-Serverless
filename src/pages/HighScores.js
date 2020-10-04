@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScoreItem, ScoresList } from '../styled/HighScores';
 
 export default function HighScores() {
-  const [highScores, setHighScores] = useState([]);
+  // const [highScores, setHighScores] = useState([]);
 
   useEffect(() => {
     const loadHighScores = async () => {
