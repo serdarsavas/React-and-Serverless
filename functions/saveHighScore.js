@@ -12,14 +12,14 @@ exports.handler = async event => {
 
   const { score, name } = JSON.parse(event.body);
 
-  if (!score || !name) {
+  if (typeof score === 'undefined' || !name) {
     return {
       statusCode: 400,
       body: JSON.stringify({ err: 'Bad request' })
     };
   }
   try {
-    const records = getHighScores(false);
+    const records = await getHighScores(false);
 
     const lowestRecord = records[9];
 
@@ -27,7 +27,11 @@ exports.handler = async event => {
       typeof lowestRecord.fields.score === 'undefined' ||
       score > lowestRecord.fields.score
     ) {
-      const updatedRecord = { id: lowestRecord.id, fields: { name, score } };
+      const updatedRecord = {
+        id: lowestRecord.id,
+        fields: { name, score }
+      };
+
       await table.update([updatedRecord]);
 
       return {
@@ -41,6 +45,7 @@ exports.handler = async event => {
       body: JSON.stringify({})
     };
   } catch (err) {
+    console.error(err);
     return {
       statusCode: 500,
       body: JSON.stringify({ err: 'Failed to save score in Airtable' })
